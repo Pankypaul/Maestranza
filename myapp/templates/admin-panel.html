@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Demo Admin Panel</h2>
+    
+    <!-- Products List -->
+    <div class="mt-4">
+        <h4>Productos</h4>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in productos %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.nombre }}</td>
+                        <td>${{ p.precio }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Users List -->
+    <div class="mt-5">
+        <h4>Usuarios</h4>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="table">
+                <!-- Similar table structure as products -->
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
