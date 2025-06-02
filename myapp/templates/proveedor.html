@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Proveedores Registrados</h2>
+
+    <div class="mt-5">
+        <h4>Proveedores</h4>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                        <th>Dirección</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in proveedores %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.correo }}</td>
+                        <td>{{ p.telefono }}</td>
+                        <td>{{ p.direccion }}</td>
+                        <td><a href="{% url 'eliminar_proveedor' p.id %}" class="btn btn-danger w-100">Eliminar</a></td>
+                        <td><a href="{% url 'editar_proveedor' p.id %}" class="btn btn-success w-100">Editar</a></td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

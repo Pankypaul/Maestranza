@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Proveedor</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-control" value="{{ proveedor.nombre }}">
+        </div>
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" name="correo" id="correo" class="form-control" value="{{ proveedor.correo }}">
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label" maxlength="9">Teléfono</label>
+            <input type="text" name="telefono" id="telefono" class="form-control" value="{{ proveedor.telefono }}">
+        </div>
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" name="direccion" id="direccion" class="form-control" value="{{ proveedor.direccion }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+{% endblock %}

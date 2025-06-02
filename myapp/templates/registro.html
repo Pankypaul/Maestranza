@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Registro de Usuarios{% endblock %}
+
+{% block content %}
+<body>
+    <div class="logbody">
+        <div class="main">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
+                    {{ form.nombre }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.telefono.id_for_label }}" class="form-label">Teléfono</label>
+                    {{ form.telefono }}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.correo.id_for_label }}" class="form-label">Correo</label>
+                    {{ form.correo }}
+                    {{ form.correo.errors }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.contrasena.id_for_label }}" class="form-label">Contraseña</label>
+                    {{ form.contrasena }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.tipo_id.id_for_label }}" class="form-label">Tipo de usuario</label>
+                    {{ form.tipo_id }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

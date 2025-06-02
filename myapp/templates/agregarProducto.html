@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Agregar Producto</h2>
+  <form method="post" required enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
+      {{ form.nombre }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.descripcion.id_for_label }}" class="form-label">Descripción</label>
+      {{ form.descripcion }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.precio.id_for_label }}" class="form-label">Precio</label>
+      {{ form.precio }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen</label>
+      {{ form.imagen }}
+    </div>
+
+    <div class="mb-3">
+      <label for="{{ form.stock.id_for_label }}" class="form-label">Stock</label>
+      {{ form.stock }}
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.categoria.id_for_label }}" class="form-label">Categoría</label>
+        <div class="form-group-flex">
+            {{ form.categoria }}
+            <a href="{% url 'agregarCategoria' %}" class="btn btn-primary btn-marca">Agregar</a>
+        </div>
+    </div>
+
+    <div class="mb-3" required>
+        <label for="{{ form.marca.id_for_label }}" required  class="form-label" >Marca</label>
+        <div class="form-group-flex" required>
+            {{ form.marca }}
+            <a href="{% url 'agregarMarca' %}" class="btn btn-primary btn-marca" required >Agregar</a>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.proveedor.id_for_label }}" class="form-label">Proveedor</label>
+        <div class="form-group-flex">
+            {{ form.proveedor }}
+            <a href="{% url 'agregarProveedor' %}" class="btn btn-primary btn-marca">Agregar</a>
+        </div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ producto.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div style="max-height: 70vh;">
+                <img src="/media/{{ producto.imagen }}" class="img-fluid w-100 h-100" style="object-fit: contain;"
+                    alt="{{ producto.nombre }}">
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h1>{{ producto.nombre }}</h1>
+            <p class="text-muted">Código: PROD-{{ producto.id }}</p>
+
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="text-success mb-0">${{ producto.precio }}</h3>
+                <span class="badge bg-success ms-3">En stock: {{ producto.stock }}</span>
+            </div>
+
+            <p class="lead">{{ producto.descripcion }}</p>
+
+            <div class="d-flex gap-2 mb-4">
+                <button class="btn btn-primary btn-lg flex-grow-1">
+                    <i class="bi bi-cart-plus"></i> Agregar al producto al pedido
+                </button>
+                <button class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-heart"></i> Favorito
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Información General</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Categoría:</strong>
+                            {% if producto.categoria %}
+                            {{ producto.categoria }}
+                            {% else %}
+                            No especificado
+                            {% endif %}
+                        </li>
+
+                        <li class="list-group-item">
+                            <strong>Marca:</strong>
+                            {% if producto.marca %}
+                            {{ producto.marca }}
+                            {% else %}
+                            No especificado
+                            {% endif %}
+                        </li>
+
+                        <li class="list-group-item">
+                            <strong>Proveedor:</strong>
+                            {% if producto.proveedor %}
+                            {{ producto.proveedor }}
+                            {% else %}
+                            No especificado
+                            {% endif %}
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
