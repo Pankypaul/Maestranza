@@ -116,11 +116,11 @@
                             <i class="bi bi-eye"></i> Ver detalles
                         </a>
 
-                        {% if usuario and usuario.tipo_id == 0 %}
+                        {% if usuario and usuario.tipo_id == 1 %}
                         <a href="{% url 'editarProducto' producto.id %}" class="btn btn-success w-100"
                             style="margin-bottom: 5px; margin-top: 5px;">Editar</a>
                         {% endif %}
-                        {% if usuario and usuario.tipo_id == 0 %}
+                        {% if usuario and usuario.tipo_id == 1 %}
                         <a href="{% url 'eliminarProducto' producto.id %}" class="btn btn-danger w-100">Eliminar</a>
                         {% endif %}
                     </div>
