@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class TipoUsuario(models.Model):
     nombre = models.CharField(max_length=50)
@@ -59,7 +60,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
     imagen = models.ImageField() 
-
+    precio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     stock = models.IntegerField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
@@ -86,7 +87,7 @@ class OrdenCompra(models.Model):
 class Productos(models.Model):
     nombre = models.CharField(max_length=100, default="")
     descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     imagen = models.ImageField() 
     stock = models.IntegerField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
@@ -102,7 +103,7 @@ class Productos(models.Model):
     
     def __str__(self):
         return self.nombre
-    
+
 
 class ProductoOrdenado(models.Model):
     orden = models.ForeignKey(OrdenCompra, on_delete=models.CASCADE, related_name='detalles')
@@ -115,3 +116,17 @@ class ProductoOrdenado(models.Model):
 
     def __str__(self):
         return f"{self.cantidad} x {self.nombre_producto} en orden #{self.orden.id}"
+    
+        
+class HistorialPrecio(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-fecha']  # Ordenar por fecha descendente
+
+class Carrito(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    fecha_agregado = models.DateTimeField(auto_now_add=True)
