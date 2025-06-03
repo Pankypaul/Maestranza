@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
-from .models import Producto , Categoria, Marca, Proveedor
+from .models import Carrito, HistorialPrecio, Producto , Categoria, Marca, Proveedor
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect
 from .forms import ProveedorForm
 from .forms import MarcaForm
 from .forms import CategoriaForm
@@ -648,3 +649,55 @@ def verPedido(request, producto_id=None):
             orden.total = total
         
     return render(request, 'verPedido.html', {'ordenes': ordenes, 'usuario': usuario, })
+
+def detalle_producto(request, producto_id):
+    producto = Producto.objects.get(id=producto_id)
+    historial_precios = HistorialPrecio.objects.filter(producto=producto)[:3]  # Últimos 3 precios
+    return render(request, 'detalle_producto.html', {
+        'producto': producto,
+        'historial_precios': historial_precios
+    })
+
+def agregar_al_carrito(request, producto_id):
+    # Obtener el producto
+    producto = get_object_or_404(Producto, id=producto_id)
+    
+    # Inicializar el carrito en la sesión si no existe
+    if 'carrito' not in request.session:
+        request.session['carrito'] = {}
+    
+    carrito = request.session['carrito']
+    
+    # Agregar o incrementar el producto en el carrito
+    if str(producto_id) in carrito:
+        carrito[str(producto_id)]['cantidad'] += 1
+    else:
+        carrito[str(producto_id)] = {
+            'id': producto.id,
+            'nombre': producto.nombre,
+            'precio': str(producto.precio),  # Decimal no es serializable
+            'cantidad': 1
+        }
+    
+    # Guardar el carrito en la sesión
+    request.session.modified = True
+    
+    return redirect('ver_carrito')
+def ver_carrito(request):
+    carrito = request.session.get('carrito', {})
+    
+    # Convertir los precios de string a decimal para cálculos
+    total = 0
+    for item in carrito.values():
+        item['precio'] = float(item['precio'])
+        total += item['precio'] * item['cantidad']
+    
+    return render(request, 'carrito.html', {
+        'items': carrito.values(),
+        'total': total
+    })
+
+def vaciar_carrito(request):
+    if 'carrito' in request.session:
+        del request.session['carrito']
+    return redirect('ver_carrito')
