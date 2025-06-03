@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}Catálogo de Productos{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Catálogo de Herramientas y Materiales</h1>
+
+    <div class="alert alert-info">
+        Mostrando <strong>{{ productos|length }}</strong> productos disponibles
+    </div>
+
+    <!--ESTE FUNCIONA PERO LO DEJARE COMENTADO-->
+    <!--<form method="get">
+        <select name="orden" onchange="this.form.submit()">
+            <option value="">Sin Filtro</option>
+            <option value="id">Orden por ID</option>
+            <option value="-precio">Mayor precio</option>
+            <option value="precio">Menor precio</option>
+        </select>
+    </form>-->
+
+    <!--ES EL OFICIAL PERO MUERE AVECES-->
+    <form method="get" action="{% url 'catalogoCompra' %}" class="mb-4">
+        <div class="row g-3">
+
+            <!-- Orden -->
+            <div class="col-md-3">
+                <label for="orden" class="form-label">Ordenar por</label>
+                <select name="orden" id="orden" class="form-select">
+                    <option value="id" {% if orden_seleccionado == 'id' %}selected{% endif %}>ID Ascendente</option>
+                    <option value="-id" {% if orden_seleccionado == '-id' %}selected{% endif %}>ID Descendente</option>
+                    <option value="precio" {% if orden_seleccionado == 'precio' %}selected{% endif %}>Precio Ascendente</option>
+                    <option value="-precio" {% if orden_seleccionado == '-precio' %}selected{% endif %}>Precio Descendente</option>
+                    <option value="nombre" {% if orden_seleccionado == 'nombre' %}selected{% endif %}>Nombre A-Z</option>
+                    <option value="-nombre" {% if orden_seleccionado == '-nombre' %}selected{% endif %}>Nombre Z-A</option>
+                </select>
+            </div>
+
+            <!-- Categoría -->
+            <div class="col-md-3">
+                <label for="categoria" class="form-label">Categoría</label>
+                <select name="categoria" id="categoria" class="form-select">
+                    <option value="all" {% if categoria_seleccionada == 'all' or categoria_seleccionada == '' %}selected{% endif %}>Todas</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == categoria_seleccionada %}selected{% endif %}>{{ cat.nombre }}</option>
+                    {% endfor %}
+                    <option value="none" {% if categoria_seleccionada == 'none' %}selected{% endif %}>No especificado</option>
+                </select>
+            </div>
+
+            <!-- Marca -->
+            <div class="col-md-3">
+                <label for="marca" class="form-label">Marca</label>
+                <select name="marca" id="marca" class="form-select">
+                    <option value="all" {% if marca_seleccionada == 'all' or marca_seleccionada == '' %}selected{% endif %}>Todas</option>
+                    {% for m in marcas %}
+                        <option value="{{ m.id }}" {% if m.id|stringformat:"s" == marca_seleccionada %}selected{% endif %}>{{ m.nombre }}</option>
+                    {% endfor %}
+                    <option value="none" {% if marca_seleccionada == 'none' %}selected{% endif %}>No especificado</option>
+                </select>
+            </div>
+
+            <!-- Proveedor -->
+            <div class="col-md-3">
+                <label for="proveedor" class="form-label">Proveedor</label>
+                <select name="proveedor" id="proveedor" class="form-select">
+                    <option value="all" {% if proveedor_seleccionado == 'all' or proveedor_seleccionado == '' %}selected{% endif %}>Todos</option>
+                    {% for p in proveedores %}
+                        <option value="{{ p.id }}" {% if p.id|stringformat:"s" == proveedor_seleccionado %}selected{% endif %}>{{ p.nombre }}</option>
+                    {% endfor %}
+                    <option value="none" {% if proveedor_seleccionado == 'none' %}selected{% endif %}>No especificado</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="{% url 'catalogo' %}" class="btn btn-secondary">Limpiar filtros</a>
+        </div>
+    </form>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for producto in productos %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div style="height: 180px; overflow: hidden;">
+                    <img src="/media/{{ producto.imagen }}" class="card-img-top h-100 w-100" style="object-fit: cover;"
+                        alt="{{ producto.nombre }}" onerror="this.src='/media/productos/default.jpg'">
+                </div>
+
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title">{{ producto.nombre|truncatechars:30 }}</h5>
+
+
+                    <div class="mb-2">
+                        {% if producto.stock > 0 %}
+                        <span class="badge bg-success">Disponible ({{ producto.stock }})</span>
+                        {% else %}
+                        <span class="badge bg-danger">Agotado</span>
+                        {% endif %}
+                    </div>
+
+                    <p class="text-muted">Código: PROD-{{ producto.id }}</p>
+
+                    
+                    <p class="card-text text-success fw-bold">${{ producto.precio }}</p>
+                    
+
+                    <div class="mt-auto">
+                        <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-eye"></i> Ver detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">
+                No hay productos disponibles en este momento.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    {% if productos.paginator.num_pages > 1 %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if productos.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; Primera</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ productos.previous_page_number }}">Anterior</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página {{ productos.number }} de {{ productos.paginator.num_pages }}
+                </span>
+            </li>
+
+            {% if productos.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ productos.next_page_number }}">Siguiente</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ productos.paginator.num_pages }}">Última &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+{% endblock %}

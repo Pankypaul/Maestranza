@@ -58,7 +58,6 @@ class Marca(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
     imagen = models.ImageField() 
 
     stock = models.IntegerField()
@@ -77,10 +76,32 @@ class Producto(models.Model):
         return self.nombre
 
 class OrdenCompra(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     productos = models.ManyToManyField(Producto)
+    cantidad = models.IntegerField()
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"Orden #{self.id} de {self.usuario.nombre}"
+    
+
+class Productos(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    imagen = models.ImageField() 
+    stock = models.IntegerField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
+    marca = models.ForeignKey(Marca, on_delete=models.CASCADE, null=True, blank=True)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.nombre} (ID: {self.id})"
+    
+    def imagen_url(self):
+        return f'/media/productos/{self.imagen}'
+    
+    def __str__(self):
+        return self.nombre
     

@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Catálogo de Productos{% endblock %}
+{% block title %}Inventario de Productos{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">Catálogo de Herramientas y Materiales</h1>
+    <h1 class="mb-4">Inventario de Herramientas y Materiales</h1>
 
     <div class="alert alert-info">
         Mostrando <strong>{{ productos|length }}</strong> productos disponibles
@@ -85,7 +85,6 @@
         {% for producto in productos %}
         <div class="col">
             <div class="card h-100 shadow-sm">
-{{ producto.precio }}
                 <div style="height: 180px; overflow: hidden;">
                     <img src="/media/{{ producto.imagen }}" class="card-img-top h-100 w-100" style="object-fit: cover;"
                         alt="{{ producto.nombre }}" onerror="this.src='/media/productos/default.jpg'">
@@ -103,9 +102,6 @@
                         <span class="badge bg-danger">Agotado</span>
                         {% endif %}
                     </div>
-                    {% if usuario and usuario.tipo_id == 2 %}
-                    <p class="card-text text-success fw-bold">${{ producto.precio }}</p>
-                    {% endif %}
 
                     <p class="text-muted">Código: PROD-{{ producto.id }}</p>
 

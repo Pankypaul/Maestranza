@@ -8,11 +8,10 @@ from .models import Usuario
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'imagen', 'stock', 'categoria', 'marca', 'proveedor']
+        fields = ['nombre', 'descripcion', 'imagen', 'stock', 'categoria', 'marca', 'proveedor']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
-            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
             'imagen': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'stock': forms.NumberInput(attrs={'class': 'form-control'}),
             'categoria': forms.Select(attrs={'class': 'form-control'}),
@@ -54,7 +53,7 @@ class ProveedorForm(forms.ModelForm):
 class EditarProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'imagen', 'stock', 'categoria', 'marca', 'proveedor']
+        fields = ['nombre', 'descripcion', 'imagen', 'stock', 'categoria', 'marca', 'proveedor']
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 3}),
         }

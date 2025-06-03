@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-  <h2>¿Eliminar usuario "{{ usuario.nombre }}"?</h2>
+  <h2>¿Eliminar usuario "{{ usuarios.nombre }}"?</h2>
   <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Eliminar</button>

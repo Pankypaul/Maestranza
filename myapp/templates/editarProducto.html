@@ -17,11 +17,6 @@
     </div>
 
     <div class="mb-3">
-      <label for="{{ form.precio.id_for_label }}" class="form-label">Precio</label>
-      {{ form.precio }}
-    </div>
-
-    <div class="mb-3">
       <label for="{{ form.imagen.id_for_label }}" class="form-label">Imagen actual:</label><br>
       {% if producto.imagen %}
         <img src="{{ producto.imagen.url }}" alt="Imagen actual" style="max-height: 100px;">
@@ -57,7 +52,6 @@
         <label for="{{ form.proveedor.id_for_label }}" class="form-label">Proveedor</label>
         <div class="form-group-flex">
             {{ form.proveedor }}
-            <a href="{% url 'agregarProveedor' %}" class="btn btn-primary btn-marca">Agregar</a>
         </div>
     </div>
 
