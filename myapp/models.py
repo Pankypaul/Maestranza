@@ -77,16 +77,14 @@ class Producto(models.Model):
 
 class OrdenCompra(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
-    productos = models.ManyToManyField(Producto)
-    cantidad = models.IntegerField(default=0)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"Orden #{self.id} de {self.usuario.nombre}"
-    
+        return f"Orden #{self.id}"
+
 
 class Productos(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, default="")
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     imagen = models.ImageField() 
@@ -105,3 +103,15 @@ class Productos(models.Model):
     def __str__(self):
         return self.nombre
     
+
+class ProductoOrdenado(models.Model):
+    orden = models.ForeignKey(OrdenCompra, on_delete=models.CASCADE, related_name='detalles')
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    nombre_producto = models.CharField(max_length=100, default="")
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    cantidad = models.IntegerField(default=1)
+    proveedor_id = models.IntegerField(null=True, blank=True)
+    proveedor_nombre = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.cantidad} x {self.nombre_producto} en orden #{self.orden.id}"

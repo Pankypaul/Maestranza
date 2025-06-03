@@ -607,3 +607,44 @@ def catalogoCompra(request):
         'proveedor_seleccionado': proveedor_id,
         'usuario': usuario,             
     })
+
+
+from .models import Productos, OrdenCompra, ProductoOrdenado, Proveedor 
+
+from django.shortcuts import render, get_object_or_404, redirect
+
+def verPedido(request, producto_id=None):
+    if request.method == "POST" and producto_id is not None:
+        producto = get_object_or_404(Productos, pk=producto_id)
+        cantidad = int(request.POST.get("cantidad", 1))
+        proveedor = producto.proveedor if producto.proveedor else None
+
+        orden = OrdenCompra.objects.create(proveedor=proveedor)
+
+        ProductoOrdenado.objects.create(
+            orden=orden,
+            producto=producto,
+            nombre_producto=producto.nombre,
+            precio_unitario=producto.precio,
+            cantidad=cantidad,
+            proveedor_id=proveedor.id if proveedor else None,
+            proveedor_nombre=proveedor.nombre if proveedor else None
+        )
+
+        return redirect('verPedido')  # Redirige a la vista GET que muestra todas las órdenes
+    usuario = None
+
+    if 'usuario_id' in request.session:
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            usuario = None
+    ordenes = OrdenCompra.objects.all().prefetch_related('detalles')
+    for orden in ordenes:
+            total = 0
+            for detalle in orden.detalles.all():
+                detalle.subtotal = detalle.cantidad * detalle.precio_unitario
+                total += detalle.subtotal
+            orden.total = total
+        
+    return render(request, 'verPedido.html', {'ordenes': ordenes, 'usuario': usuario, })

@@ -23,11 +23,17 @@
 
             <p class="lead">{{ producto.descripcion }}</p>
 
-            <div class="d-flex gap-2 mb-4">
-                <button class="btn btn-primary btn-lg flex-grow-1">
-                    <i class="bi bi-cart-plus"></i> Agregar al producto al pedido
+
+            <form action="{% url 'verPedido' producto.id %}" method="post"
+                class="d-flex gap-2 align-items-center">
+                {% csrf_token %}
+                <input type="number" name="cantidad" min="1" value="1" class="form-control" style="width: 100px;">
+                <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
+                    <i class="bi bi-cart-plus"></i> Agregar al pedido
                 </button>
-            </div>
+            </form>
+
+
 
             <div class="card">
                 <div class="card-body">
