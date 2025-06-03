@@ -165,6 +165,21 @@ def detalle_producto(request, producto_id):
         'usuario': usuario, 
         })
 
+def detalle_productos(request, producto_id):
+    producto = get_object_or_404(Productos, id=producto_id)
+    usuario = None
+
+    if 'usuario_id' in request.session:
+        try:
+            usuario = Usuario.objects.get(id=request.session['usuario_id'])
+        except Usuario.DoesNotExist:
+            usuario = None
+    return render(request, 'detalle_productos.html', {
+        'producto': producto,
+        'usuario': usuario, 
+        })
+
+
 
 
 def admin_panel(request):
@@ -581,7 +596,7 @@ def catalogoCompra(request):
         except Usuario.DoesNotExist:
             usuario = None
 
-    return render(request, 'catalogo.html', {
+    return render(request, 'catalogoCompra.html', {
         'productos': productos,
         'categorias': categorias,
         'marcas': marcas,

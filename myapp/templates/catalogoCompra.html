@@ -77,7 +77,7 @@
 
         <div class="mt-3">
             <button type="submit" class="btn btn-primary">Filtrar</button>
-            <a href="{% url 'catalogo' %}" class="btn btn-secondary">Limpiar filtros</a>
+            <a href="{% url 'catalogoCompra' %}" class="btn btn-secondary">Limpiar filtros</a>
         </div>
     </form>
 
@@ -110,7 +110,7 @@
                     
 
                     <div class="mt-auto">
-                        <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-primary w-100">
+                        <a href="{% url 'detalle_productos' producto.id %}" class="btn btn-outline-primary w-100">
                             <i class="bi bi-eye"></i> Ver detalles
                         </a>
                     </div>

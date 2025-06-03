@@ -78,7 +78,7 @@ class Producto(models.Model):
 class OrdenCompra(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     productos = models.ManyToManyField(Producto)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(default=0)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
