@@ -14,6 +14,8 @@ from .forms import LoginForm
 from .forms import UsuarioForm
 from .forms import EditarUsuarioForm
 from .models import Productos
+from datetime import date
+
 
 def index(request):
     return render(request, 'index.html')
@@ -717,3 +719,19 @@ def habilitar_proveedor(request, proveedor_id):
     proveedor.activo = True
     proveedor.save()
     return redirect(reverse('proveedor'))
+
+
+def bajoStock(request):
+
+    usuario_actual = request.session.get('usuario_id')
+
+    usuario = Usuario.objects.filter(id=usuario_actual).first()
+
+    productos = Producto.objects.filter(stock__lte=5)  
+    fecha_alerta = date.today()
+
+    return render(request, 'bajoStock.html', {
+        'productos': productos,
+        'fecha_alerta': fecha_alerta,
+        'usuario': usuario
+    })

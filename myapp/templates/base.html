@@ -61,6 +61,11 @@
 
                     </li>
                     {% endif %}
+                    {% if usuario and usuario.tipo_id == 2 %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'bajoStock' %}">Alertas</a>
+                    </li>
+                    {% endif %}
 
                     {% if usuario and usuario.tipo_id == 2 or usuario.tipo_id == 1 %}
                     <li class="nav-item">
