@@ -15,10 +15,14 @@
                         <th>Correo</th>
                         <th>Telefono</th>
                         <th>Dirección</th>
+                        <th>Eliminar</th>
+                        <th>Editar</th>
+                        <th>Habilitar</th> <!-- Nueva columna -->
                     </tr>
                 </thead>
                 <tbody>
                     {% for p in proveedores %}
+                    {% if p.activo %}
                     <tr>
                         <td>{{ p.id }}</td>
                         <td>{{ p.nombre }}</td>
@@ -27,9 +31,61 @@
                         <td>{{ p.direccion }}</td>
                         <td><a href="{% url 'eliminar_proveedor' p.id %}" class="btn btn-danger w-100">Eliminar</a></td>
                         <td><a href="{% url 'editar_proveedor' p.id %}" class="btn btn-success w-100">Editar</a></td>
-
+                        <td>
+                            {% if p.activo %}
+                            <a href="{% url 'deshabilitar_proveedor' p.id %}"
+                                class="btn btn-warning w-100">Deshabilitar</a>
+                            {% else %}
+                            <a href="{% url 'habilitar_proveedor' p.id %}" class="btn btn-primary w-100">Habilitar</a>
+                            {% endif %}
+                        </td>
                     </tr>
+                    {% endif %}
                     {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mt-5">
+        <h4>Proveedores</h4>
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                        <th>Dirección</th>
+                        <th>Eliminar</th>
+                        <th>Editar</th>
+                        <th>Deshabilitar</th> <!-- Nueva columna -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in proveedores %}
+                    {% if not p.activo %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.nombre }}</td>
+                        <td>{{ p.correo }}</td>
+                        <td>{{ p.telefono }}</td>
+                        <td>{{ p.direccion }}</td>
+                        <td><a href="{% url 'eliminar_proveedor' p.id %}" class="btn btn-danger w-100">Eliminar</a></td>
+                        <td><a href="{% url 'editar_proveedor' p.id %}" class="btn btn-success w-100">Editar</a></td>
+                        <td>
+                            {% if p.activo %}
+                            <a href="{% url 'deshabilitar_proveedor' p.id %}"
+                                class="btn btn-warning w-100">Deshabilitar</a>
+                            {% else %}
+                            <a href="{% url 'habilitar_proveedor' p.id %}" class="btn btn-primary w-100">Habilitar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
                 </tbody>
             </table>
         </div>

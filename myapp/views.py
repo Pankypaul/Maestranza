@@ -701,3 +701,19 @@ def vaciar_carrito(request):
     if 'carrito' in request.session:
         del request.session['carrito']
     return redirect('ver_carrito')
+
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
+from .models import Proveedor
+
+def deshabilitar_proveedor(request, proveedor_id):
+    proveedor = get_object_or_404(Proveedor, id=proveedor_id)
+    proveedor.activo = False
+    proveedor.save()
+    return redirect(reverse('proveedor'))
+
+def habilitar_proveedor(request, proveedor_id):
+    proveedor = get_object_or_404(Proveedor, id=proveedor_id)
+    proveedor.activo = True
+    proveedor.save()
+    return redirect(reverse('proveedor'))

@@ -67,7 +67,11 @@
                 <select name="proveedor" id="proveedor" class="form-select">
                     <option value="all" {% if proveedor_seleccionado == 'all' or proveedor_seleccionado == '' %}selected{% endif %}>Todos</option>
                     {% for p in proveedores %}
-                        <option value="{{ p.id }}" {% if p.id|stringformat:"s" == proveedor_seleccionado %}selected{% endif %}>{{ p.nombre }}</option>
+                        {% if p.activo %}
+                            <option value="{{ p.id }}" {% if p.id|stringformat:"s" == proveedor_seleccionado %}selected{% endif %}>
+                                {{ p.nombre }}
+                            </option>
+                        {% endif %}
                     {% endfor %}
                     <option value="none" {% if proveedor_seleccionado == 'none' %}selected{% endif %}>No especificado</option>
                 </select>

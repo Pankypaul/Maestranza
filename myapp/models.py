@@ -37,10 +37,10 @@ class Proveedor(models.Model):
     correo = models.EmailField(unique=True)
     telefono = models.IntegerField()
     direccion = models.CharField(max_length=100)
+    activo = models.BooleanField(default=True)  # Nuevo campo para estado activo/deshabilitado
 
     def __str__(self):
         return self.nombre
-
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
