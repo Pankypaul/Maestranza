@@ -33,6 +33,7 @@ urlpatterns = [
     path('proveedores/deshabilitar/<int:proveedor_id>/', views.deshabilitar_proveedor, name='deshabilitar_proveedor'),
     path('proveedores/habilitar/<int:proveedor_id>/', views.habilitar_proveedor, name='habilitar_proveedor'),
     path('bajoStock/', views.bajoStock, name='bajoStock'),
+    path('cerrar_sesion/', views.cerrar_sesion, name='cerrar_sesion'),
 
 ]
 

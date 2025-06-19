@@ -735,3 +735,11 @@ def bajoStock(request):
         'fecha_alerta': fecha_alerta,
         'usuario': usuario
     })
+
+
+def cerrar_sesion(request):
+    try:
+        del request.session['usuario_id']  
+    except KeyError:
+        pass
+    return redirect('login')  

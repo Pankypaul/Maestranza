@@ -90,6 +90,11 @@
                         </div>
                     </li>
                     {% endif %}
+                    {% if usuario %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'cerrar_sesion' %}">Cerrar sesión</a>
+                        </li>
+                    {% endif %}
 
                 </ul>
 
