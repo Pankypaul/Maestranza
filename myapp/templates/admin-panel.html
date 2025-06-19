@@ -30,7 +30,6 @@
     </div>-->
 
     <div class="mt-5">
-        <h4>Usuarios</h4>
         <div style="max-height: 400px; overflow-y: auto;">
             <table class="table">
                 <div style="max-height: 400px; overflow-y: auto;">
@@ -42,7 +41,7 @@
                                 <th>Telefono</th>
                                 <th>Correo</th>
                                 <th>Contraseña</th>
-                                <th>Tipo_id</th>
+                                <th>Tipo usuario</th>
                                 <th>Eliminar</th>
                                 <th>Editar</th>
                             </tr>
@@ -55,7 +54,35 @@
                                 <td>{{ p.telefono }}</td>
                                 <td>{{ p.correo }}</td>
                                 <td>{{ p.contrasena }}</td>
-                                <td>{{ p.tipo_id }}</td>
+
+                                {% if p.tipo_id == -1 %}
+                                <td>Deshabilitado</td>
+                                {% endif %}
+                                {% if p.tipo_id == 0 %}
+                                <td>Administrador</td>
+                                {% endif %}
+                                {% if p.tipo_id == 1 %}
+                                <td>Gestor de inventario</td>
+                                {% endif %}
+                                {% if p.tipo_id == 2 %}
+                                <td>Comprador</td>
+                                {% endif %}
+                                {% if p.tipo_id == 3 %}
+                                <td>Encargado de logistica</td>
+                                {% endif %}
+                                {% if p.tipo_id == 4 %}
+                                <td>Jefe de produccion</td>
+                                {% endif %}
+                                {% if p.tipo_id == 5 %}
+                                <td>Auditor de inventario</td>
+                                {% endif %}
+                                {% if p.tipo_id == 6 %}
+                                <td>Gerente de proyectos</td>
+                                {% endif %}
+                                {% if p.tipo_id == 7 %}
+                                <td>Trabajador de planta</td>
+                                {% endif %}
+
                                 <td><a href="{% url 'eliminarUsuario' p.id %}" class="btn btn-danger w-100">Eliminar</a></td>
                                 <td><a href="{% url 'editarUsuario' p.id %}" class="btn btn-success w-100">Editar</a></td>
                             </tr>
