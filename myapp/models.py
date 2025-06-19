@@ -11,6 +11,7 @@ class TipoUsuario(models.Model):
 
 class Usuario(models.Model):
     TIPO_USUARIO = [
+        (-1, 'Deshabilitado'),
         (0, 'Administrador'),
         (1, 'Gestor de Inventario'),
         (2, 'Comprador'),

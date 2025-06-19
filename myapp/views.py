@@ -397,6 +397,8 @@ def login_view(request):
                 
                 if usuario.tipo_id == 0: 
                     return redirect('admin_panel')
+                elif usuario.tipo_id == -1:
+                    return redirect('login')
                 else:
                     return redirect('catalogo')
 
