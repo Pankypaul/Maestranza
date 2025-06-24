@@ -24,16 +24,16 @@
             <p class="lead">{{ producto.descripcion }}</p>
 
 
-            <form action="{% url 'verPedido' producto.id %}" method="post" class="d-flex gap-2 align-items-center">
+            <form action="{% url 'agregar_al_carrito' producto.id %}" method="post" class="d-flex gap-2 align-items-center">
                 {% csrf_token %}
                 <input type="number" name="cantidad" min="1" value="1" class="form-control" style="width: 100px;">
 
                 {% if producto.proveedor.activo %}
-                <button type="submit" class="btn btn-primary btn-lg flex-grow-1">
-                    <i class="bi bi-cart-plus"></i> Agregar al pedido
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-cart-plus"></i> Añadir al carrito
                 </button>
                 {% else %}
-                <p style="color: red; font-size:larger; border-color: black;">Proveedor deshabilitado</p>
+                <p style="color: red;">Proveedor deshabilitado</p>
                 {% endif %}
             </form>
 
@@ -71,6 +71,14 @@
                             {% endif %}
                         </li>
 
+                    </ul>
+                    <h4>Historial de Precios</h4>
+                    <ul>
+                        {% for precio in historial_precios %}
+                            <li>{{ precio.fecha }}: ${{ precio.precio }}</li>
+                        {% empty %}
+                            <li>No hay registro de precios anteriores.</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

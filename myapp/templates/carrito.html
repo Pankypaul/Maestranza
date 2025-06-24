@@ -8,29 +8,31 @@
             <thead>
                 <tr>
                     <th>Producto</th>
-                    <th>Precio</th>
                     <th>Cantidad</th>
-                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
-                    <tr>
-                        <td>{{ item.nombre }}</td>
-                        <td>${{ item.precio }}</td>
-                        <td>{{ item.cantidad }}</td>
-                        <td>${{ item.precio|floatformat:2|add:item.cantidad|floatformat:2 }}</td>
-                    </tr>
-                {% endfor %}
+            {% for item in items %}
+            <tr>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
 
-        <h3>Total: ${{ total }}</h3>
-
-        <a href="{% url 'vaciar_carrito' %}" class="btn btn-danger">Vaciar Carrito</a>
+        <!-- Botones agrupados -->
+        <div class="d-flex gap-2 align-items-center">
+            <a href="{% url 'vaciar_carrito' %}" class="btn btn-danger">Vaciar Carrito</a>
+            <a href="{% url 'catalogoCompra' %}" class="btn btn-primary">Seguir comprando</a>
+            <form action="{% url 'verPedido' %}" method="post" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-cart-check"></i> Comprar
+                </button>
+            </form>
+        </div>
     {% else %}
         <p>Tu carrito está vacío.</p>
     {% endif %}
-
-    <a href="{% url 'catalogo' %}" class="btn btn-primary mt-3">Seguir comprando</a>
 {% endblock %}

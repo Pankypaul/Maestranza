@@ -27,11 +27,6 @@
                     <i class="bi bi-cart-plus"></i> Agregar al producto al pedido
                 </button>
             </div>-->
-            <form action="{% url 'agregar_al_carrito' producto.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Añadir al carrito</button>
-            </form>
-            <a href="{% url 'ver_carrito' %}">Ver carrito</a>
             
             <div class="card">
                 <div class="card-body">
@@ -65,14 +60,7 @@
                         </li>
 
                     </ul>
-                    <h4>Historial de Precios</h4>
-                    <ul>
-                        {% for precio in historial_precios %}
-                            <li>{{ precio.fecha }}: ${{ precio.precio }}</li>
-                        {% empty %}
-                            <li>No hay registro de precios anteriores.</li>
-                        {% endfor %}
-                    </ul>
+                    
                 </div>
             </div>
         </div>

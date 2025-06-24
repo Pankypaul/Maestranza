@@ -15,6 +15,7 @@ from .forms import UsuarioForm
 from .forms import EditarUsuarioForm
 from .models import Productos
 from datetime import date
+from .models import OrdenCompra, ProductoOrdenado
 
 
 def index(request):
@@ -522,29 +523,29 @@ def eliminar_proveedor(request, id):
         'usuario': usuario,})
 
 
-
+#Productos predefinidos
 def crear_productos_iniciales2():
     productos_iniciales2 = [
-        {'nombre': "Martillo de Acero2", 'descripcion': "Martillo profesional con mango de fibra de vidrio",'precio': 12500,'imagen': "martillo.png", 'stock': 50},
-        {'nombre': "Destornillador Phillips2", 'descripcion': "Juego de destornilladores anti-deslizantes", 'precio': 8500,'imagen': "martillo.png", 'stock': 120},
-        {'nombre': "Taladro Percutor 750W2", 'descripcion': "Taladro con percusión y velocidad variable", 'precio': 45900,'imagen': "martillo.png", 'stock': 15},
-        {'nombre': "Sierra Circular 1800W2", 'descripcion': "Sierra circular profesional con láser guía", 'precio': 78900,'imagen': "martillo.png", 'stock': 8},
-        {'nombre': "Llave Inglesa Ajustable2", 'descripcion': "Llave de 8 a 32 mm con cabeza giratoria", 'precio': 15600,'imagen': "martillo.png", 'stock': 45},
-        {'nombre': "Cemento Gris 25kg2", 'descripcion': "Cemento de fraguado normal para construcción", 'precio': 8500,'imagen': "martillo.png", 'stock': 200},
-        {'nombre': "Ladrillo Fiscal 6 huecos2", 'descripcion': "Ladrillo cerámico estándar 6 huecos", 'precio': 350,'imagen': "martillo.png", 'stock': 1000},
-        {'nombre': "Pintura Latex 4L2", 'descripcion': "Pintura blanca lavable interior/exterior", 'precio': 22900,'imagen': "martillo.png", 'stock': 30},
+        {'nombre': "Martillo de Acero2", 'descripcion': "Martillo profesional con mango de fibra de vidrio",'precio': 12500,'imagen': "martillo.png", 'stock': 50,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Destornillador Phillips2", 'descripcion': "Juego de destornilladores anti-deslizantes", 'precio': 8500,'imagen': "martillo.png", 'stock': 120,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Taladro Percutor 750W2", 'descripcion': "Taladro con percusión y velocidad variable", 'precio': 45900,'imagen': "martillo.png", 'stock': 15,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Sierra Circular 1800W2", 'descripcion': "Sierra circular profesional con láser guía", 'precio': 78900,'imagen': "martillo.png", 'stock': 8,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Llave Inglesa Ajustable2", 'descripcion': "Llave de 8 a 32 mm con cabeza giratoria", 'precio': 15600,'imagen': "martillo.png", 'stock': 45,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Cemento Gris 25kg2", 'descripcion': "Cemento de fraguado normal para construcción", 'precio': 8500,'imagen': "martillo.png", 'stock': 200,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Ladrillo Fiscal 6 huecos2", 'descripcion': "Ladrillo cerámico estándar 6 huecos", 'precio': 350,'imagen': "martillo.png", 'stock': 1000,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Pintura Latex 4L2", 'descripcion': "Pintura blanca lavable interior/exterior", 'precio': 22900,'imagen': "martillo.png", 'stock': 30,'categoria': 1, 'marca': 1, 'proveedor': 1},
         {'nombre': "Cerámica 45x45 cm2", 'descripcion': "Piso cerámico antideslizante", 'precio': 8990,'imagen': "martillo.png", 'stock': 150},
-        {'nombre': "Tubo PVC 1/2 x 3m2", 'descripcion': "Tubería para instalaciones sanitarias", 'precio': 3200,'imagen': "martillo.png", 'stock': 80},
-        {'nombre': "Cable Eléctrico 2.5mm2", 'descripcion': "Cobre flexible para instalaciones", 'precio': 4500,'imagen': "martillo.png", 'stock': 120},
-        {'nombre': "Interruptor Simple2", 'descripcion': "Interruptor de pared para 10A", 'precio': 2500,'imagen': "martillo.png", 'stock': 60},
-        {'nombre': "Lijadora Orbital2", 'descripcion': "Lijadora profesional 250W con bolsa colectora", 'precio': 38900,'imagen': "martillo.png", 'stock': 12},
-        {'nombre': "Nivel Laser2", 'descripcion': "Nivel láser autónivelante 360°", 'precio': 65900,'imagen': "NivelLaser360.jpg", 'stock': 5},
-        {'nombre': "Andamio Modular2", 'descripcion': "Estructura metálica para trabajo en altura", 'precio': 125000,'imagen': "andamio.jpg", 'stock': 3},
-        {'nombre': "Carretilla de Obra2", 'descripcion': "Carretilla metálica 6 pies cúbicos", 'precio': 45900,'imagen': "martillo.png", 'stock': 18},
-        {'nombre': "Mezcladora de Pintura2", 'descripcion': "Accesorio para taladro para mezclar pintura", 'precio': 8900,'imagen': "martillo.png", 'stock': 25},
-        {'nombre': "Broca para Concreto 1/222", 'descripcion': "Juego de brocas widia para concreto", 'precio': 12900,'imagen': "martillo.png", 'stock': 40},
-        {'nombre': "Guantes de Seguridad2", 'descripcion': "Guantes anticorte nivel 5", 'precio': 9900,'imagen': "martillo.png", 'stock': 75},
-        {'nombre': "Casco de Seguridad2", 'descripcion': "Casco con ajuste ergonómico y visera", 'precio': 7500,'imagen': "martillo.png", 'stock': 50}
+        {'nombre': "Tubo PVC 1/2 x 3m2", 'descripcion': "Tubería para instalaciones sanitarias", 'precio': 3200,'imagen': "martillo.png", 'stock': 80,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Cable Eléctrico 2.5mm2", 'descripcion': "Cobre flexible para instalaciones", 'precio': 4500,'imagen': "martillo.png", 'stock': 120,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Interruptor Simple2", 'descripcion': "Interruptor de pared para 10A", 'precio': 2500,'imagen': "martillo.png", 'stock': 60,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Lijadora Orbital2", 'descripcion': "Lijadora profesional 250W con bolsa colectora", 'precio': 38900,'imagen': "martillo.png", 'stock': 12,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Nivel Laser2", 'descripcion': "Nivel láser autónivelante 360°", 'precio': 65900,'imagen': "NivelLaser360.jpg", 'stock': 5,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Andamio Modular2", 'descripcion': "Estructura metálica para trabajo en altura", 'precio': 125000,'imagen': "andamio.jpg", 'stock': 3,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Carretilla de Obra2", 'descripcion': "Carretilla metálica 6 pies cúbicos", 'precio': 45900,'imagen': "martillo.png", 'stock': 18,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Mezcladora de Pintura2", 'descripcion': "Accesorio para taladro para mezclar pintura", 'precio': 8900,'imagen': "martillo.png", 'stock': 25,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Broca para Concreto 1/222", 'descripcion': "Juego de brocas widia para concreto", 'precio': 12900,'imagen': "martillo.png", 'stock': 40,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Guantes de Seguridad2", 'descripcion': "Guantes anticorte nivel 5", 'precio': 9900,'imagen': "martillo.png", 'stock': 75,'categoria': 1, 'marca': 1, 'proveedor': 1},
+        {'nombre': "Casco de Seguridad2", 'descripcion': "Casco con ajuste ergonómico y visera", 'precio': 7500,'imagen': "martillo.png", 'stock': 50,'categoria': 1, 'marca': 1, 'proveedor': 1}
     ]
     
     for prod in productos_iniciales2:
@@ -614,45 +615,78 @@ def catalogoCompra(request):
     })
 
 
-from .models import Productos, OrdenCompra, ProductoOrdenado, Proveedor 
 
-from django.shortcuts import render, get_object_or_404, redirect
 
 def verPedido(request, producto_id=None):
-    if request.method == "POST" and producto_id is not None:
-        producto = get_object_or_404(Productos, pk=producto_id)
-        cantidad = int(request.POST.get("cantidad", 1))
-        proveedor = producto.proveedor if producto.proveedor else None
-
-        orden = OrdenCompra.objects.create(proveedor=proveedor)
-
-        ProductoOrdenado.objects.create(
-            orden=orden,
-            producto=producto,
-            nombre_producto=producto.nombre,
-            precio_unitario=producto.precio,
-            cantidad=cantidad,
-            proveedor_id=proveedor.id if proveedor else None,
-            proveedor_nombre=proveedor.nombre if proveedor else None
-        )
-
-        return redirect('verPedido')  # Redirige a la vista GET que muestra todas las órdenes
     usuario = None
-
     if 'usuario_id' in request.session:
-        try:
-            usuario = Usuario.objects.get(id=request.session['usuario_id'])
-        except Usuario.DoesNotExist:
-            usuario = None
-    ordenes = OrdenCompra.objects.all().prefetch_related('detalles')
+        usuario = Usuario.objects.filter(id=request.session['usuario_id']).first()
+
+    if request.method == "POST":
+        if producto_id is not None:
+            # Caso: se agrega desde un producto individual
+            producto = get_object_or_404(Productos, pk=producto_id)
+            cantidad = int(request.POST.get("cantidad", 1))
+            proveedor = producto.proveedor if producto.proveedor else None
+
+            orden = OrdenCompra.objects.create(proveedor=proveedor)
+
+            ProductoOrdenado.objects.create(
+                orden=orden,
+                producto=producto,
+                nombre_producto=producto.nombre,
+                precio_unitario=producto.precio,
+                cantidad=cantidad,
+                proveedor_id=proveedor.id if proveedor else None,
+                proveedor_nombre=proveedor.nombre if proveedor else None
+            )
+
+        else:
+            # Caso: se viene desde el carrito
+            carrito = request.session.get('carrito', {})
+
+            if carrito:
+                # Tomamos proveedor del primer producto como ejemplo
+                primer_item = next(iter(carrito.values()))
+                producto = get_object_or_404(Productos, pk=primer_item['id'])
+                proveedor = producto.proveedor if producto.proveedor else None
+
+                orden = OrdenCompra.objects.create(proveedor=proveedor)
+
+                for item in carrito.values():
+                    producto = get_object_or_404(Productos, pk=item['id'])
+
+                    ProductoOrdenado.objects.create(
+                        orden=orden,
+                        producto=producto,
+                        nombre_producto=producto.nombre,
+                        precio_unitario=producto.precio,
+                        cantidad=item['cantidad'],
+                        proveedor_id=proveedor.id if proveedor else None,
+                        proveedor_nombre=proveedor.nombre if proveedor else None
+                    )
+
+                # Vaciar el carrito
+                del request.session['carrito']
+                request.session.modified = True
+
+        return redirect('verPedido')
+
+    # GET: Mostrar las órdenes existentes
+    ordenes = OrdenCompra.objects.all().prefetch_related('detalles').order_by('-fecha')
+
     for orden in ordenes:
-            total = 0
-            for detalle in orden.detalles.all():
-                detalle.subtotal = detalle.cantidad * detalle.precio_unitario
-                total += detalle.subtotal
-            orden.total = total
-        
-    return render(request, 'verPedido.html', {'ordenes': ordenes, 'usuario': usuario, })
+        total = 0
+        for detalle in orden.detalles.all():
+            detalle.subtotal = detalle.cantidad * detalle.precio_unitario
+            total += detalle.subtotal
+        orden.total = total
+
+    return render(request, 'verPedido.html', {
+        'ordenes': ordenes,
+        'usuario': usuario
+    })
+
 
 def detalle_producto(request, producto_id):
     producto = Producto.objects.get(id=producto_id)
@@ -663,43 +697,51 @@ def detalle_producto(request, producto_id):
     })
 
 def agregar_al_carrito(request, producto_id):
-    # Obtener el producto
     producto = get_object_or_404(Producto, id=producto_id)
-    
-    # Inicializar el carrito en la sesión si no existe
+    cantidad = int(request.POST.get('cantidad', 1))
+
     if 'carrito' not in request.session:
         request.session['carrito'] = {}
-    
+
     carrito = request.session['carrito']
-    
-    # Agregar o incrementar el producto en el carrito
-    if str(producto_id) in carrito:
-        carrito[str(producto_id)]['cantidad'] += 1
+    producto_key = str(producto_id)
+
+    if producto_key in carrito:
+        carrito[producto_key]['cantidad'] += cantidad
     else:
-        carrito[str(producto_id)] = {
+        carrito[producto_key] = {
             'id': producto.id,
             'nombre': producto.nombre,
-            'precio': str(producto.precio),  # Decimal no es serializable
-            'cantidad': 1
+            'precio': str(producto.precio),  # convertir a string
+            'cantidad': cantidad
         }
-    
-    # Guardar el carrito en la sesión
+
     request.session.modified = True
-    
     return redirect('ver_carrito')
+
+from .models import Producto  # o Productos según tu modelo
+
 def ver_carrito(request):
     carrito = request.session.get('carrito', {})
-    
-    # Convertir los precios de string a decimal para cálculos
+
+    productos_ids = [int(k) for k in carrito.keys()]
+    productos = Producto.objects.filter(id__in=productos_ids)
+
+    items = []
     total = 0
-    for item in carrito.values():
-        item['precio'] = float(item['precio'])
-        total += item['precio'] * item['cantidad']
-    
+
+    for key, item in carrito.items():
+        item['id'] = int(key)  # convertir string a int aquí
+        total += float(item['precio']) * item['cantidad']
+        items.append(item)
+
     return render(request, 'carrito.html', {
-        'items': carrito.values(),
-        'total': total
+        'items': items,
+        'productos': productos,
+        'total': total,
     })
+
+
 
 def vaciar_carrito(request):
     if 'carrito' in request.session:
